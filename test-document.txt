@@ -1,0 +1,47 @@
+﻿Sample Document for PII Detection Testing
+============================================
+
+This document contains various types of personally identifiable information (PII)
+for testing the OpenAI Privacy Filter application.
+
+CONTACT INFORMATION:
+--------------------
+Name: John Smith
+Email: john.smith@example.com
+Phone: (555) 123-4567
+Alt Phone: +1-800-555-0199
+SSN: 123-45-6789
+
+WORKPLACE DETAILS:
+------------------
+Company: Acme Corporation
+Address: 1234 Main Street, Suite 500, Springfield, IL 62701
+Office Phone: 555.987.6543
+Fax: (555) 987-6543
+
+FINANCIAL INFORMATION:
+----------------------
+Credit Card: 4532-1234-5678-9012
+Bank Account: 9876543210
+Routing Number: 021000021
+
+PERSONAL DETAILS:
+-----------------
+Date of Birth: March 15, 1985
+Home Address: 567 Oak Avenue, Apt 12B, Portland, OR 97201
+Driver License: D1234567
+
+NETWORK INFORMATION:
+--------------------
+IP Address: 192.168.1.100
+Server IP: 10.0.0.25
+Gateway: 172.16.0.1
+
+ADDITIONAL ENTITIES:
+--------------------
+Secondary Email: jane.doe@company.org
+Emergency Contact: Dr. Sarah Johnson
+Medical ID: MED-2024-78901
+Passport Number: AB1234567
+
+This is a test document. All information is fictional and created for testing purposes only.
