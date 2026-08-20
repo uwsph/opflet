@@ -17,6 +17,7 @@ A lightweight Python desktop (and local web) application for redacting sensitive
 |----------------------------|------------------------------------------------------|
 | Git                        | See [Git-SCM](https://git-scm.com/)                  |
 | Python 3.14+               | See [python.org](https://www.python.org/)            |
+| `torch`                    | `pip install torch`                                  |
 | `flet` v0.86.5+            | `pip install flet`                                   |
 | OpenAI Privacy Filter      | See setup steps below                                |
 
