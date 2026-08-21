@@ -11,7 +11,7 @@ Features:
     * Falls back to web-browser mode if the native desktop client
       cannot be launched (e.g. blocked by Group Policy / AppLocker)
 
-Version: 0.0.1
+Version: 0.0.2
 License: Apache 2.0
 """
 
@@ -389,7 +389,7 @@ class OPFGui:
         self.show_info_dialog(
             "About",
             "Open Privacy Filter GUI\n"
-            "Flet Edition — v0.0.1\n\n"
+            "Flet Edition — v0.0.2\n\n"
             "• Cross-platform desktop front-end for the OpenAI Privacy Filter.\n"
             "• License: Apache 2.0\n"
             "• Website: https://github.com/uwsph/opflet",
