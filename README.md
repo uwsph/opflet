@@ -50,7 +50,7 @@ python opflet.py
 
 ### Workflow
 
-1. **Input** – Drag a `.txt` file into the left panel, click **Open** to browse, or just paste in text.
+1. **Input** – Open a text file into the left panel or just paste in text.
 2. **Redact** – Click **Redact**. The model processes the text and displays results in the right panel.
 3. **Export** – Click **Copy Output** to clipboard, or **Save Output** to write a new file.
 4. **Clear** – Reset both panels to start fresh. (Optional)
