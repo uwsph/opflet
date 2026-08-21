@@ -1,7 +1,7 @@
 """
 Open Privacy Filter GUI — Flet Edition
 
-A cross-platform desktop front-end for the Open Privacy Filter (OPF),
+A cross-platform desktop front-end for the OpenAI Privacy Filter (OPF),
 built with Flet (https://flet.dev) instead of tkinter.
 
 Features:
@@ -35,7 +35,7 @@ try:
     from opf import OPF
 except ImportError:
     raise SystemExit(
-        "Missing dependency: Open Privacy Filter\n\n"
+        "Missing dependency: OpenAI Privacy Filter\n\n"
         "Install with:\n"
         "git clone https://github.com/openai/privacy-filter.git\n"
         "cd privacy-filter\n"
@@ -390,7 +390,7 @@ class OPFGui:
             "About",
             "Open Privacy Filter GUI\n"
             "Flet Edition — v0.0.1\n\n"
-            "• Cross-platform desktop front-end for the Open Privacy Filter.\n"
+            "• Cross-platform desktop front-end for the OpenAI Privacy Filter.\n"
             "• License: Apache 2.0\n"
             "• Website: https://github.com/uwsph/opflet",
         )

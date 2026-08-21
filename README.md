@@ -30,6 +30,9 @@ pip install -e .
 
 # 2. Install flet
 pip install flet
+
+# On Ubuntu Linux systems, you may need to install flet with, e.g.:
+pip install flet-desktop==0.86.5 --upgrade --break-system-packages
 ```
 
 ## 💡 Usage
@@ -67,7 +70,7 @@ opflet/
 ├── opflet.py                # Main GUI application
 ├── launch.bat               # Windows launcher
 ├── test-document.txt        # Test input file
-├── opflet_screenshot.png    # Modern theme GUI screenshot
+├── opflet_screenshot.png    # GUI screenshot
 ├── LICENSE.txt              # Apache 2.0 license file
 └── README.md                # This file
 ```
