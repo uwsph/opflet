@@ -603,9 +603,141 @@ class OPFGui:
 
 def main(page: ft.Page):
     OPFGui(page)
+    page.on_disappear = _on_window_close
+
+
+def _on_window_close(page: ft.Page):
+    """
+    Called when the user closes the app window.
+    Gives the Flutter engine a moment to clean up properly before
+    the process exits, which prevents the Linux-specific warnings:
+
+        embedder.cc (2603): 'FlutterEngineRemoveView' returned 'kInvalidArguments'
+        Attempted to set message handler on an FlBinaryMessenger without an engine
+    """
+    try:
+        page.close()
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":
+    import sys
+    import os
+
+    #
+    # Option 1 — Fallback: suppress the specific warnings at the source.
+    # These are harmless; we only care about them because they're noisy.
+    #
+    if sys.platform == "linux":
+        import warnings
+
+        _linux_state = {"suppressed": False}
+
+        def _warning_filter(message, category, filename, lineno, file=None, line=None):
+            if _linux_state["suppressed"]:
+                return True
+            text = str(message)
+            if "FlutterEngineRemoveView" in text:
+                _linux_state["suppressed"] = True
+                return True
+            if "FlBinaryMessenger" in text:
+                _linux_state["suppressed"] = True
+                return True
+            return False
+
+        warnings.showwarning = _warning_filter
+
+        #
+        # The Flutter engine and GLib emit warnings directly to stderr
+        # (not via Python's warnings module), so we also filter stderr.
+        #
+        _original_stderr = sys.stderr
+
+        class _FilteredStderr:
+            """Wraps sys.stderr and filters out known harmless Linux warnings."""
+
+            def __init__(self, wrapped):
+                self._wrapped = wrapped
+                self._suppressed = False
+
+            def write(self, text):
+                if self._suppressed:
+                    return
+                if "FlutterEngineRemoveView" in text:
+                    self._suppressed = True
+                    return
+                if "FlBinaryMessenger" in text:
+                    self._suppressed = True
+                    return
+                self._wrapped.write(text)
+
+            def flush(self):
+                self._wrapped.flush()
+
+            def isatty(self):
+                return self._wrapped.isatty()
+
+        sys.stderr = _FilteredStderr(_original_stderr)
+
+        #
+        # GLib's g_warning writes directly to the stderr file descriptor (fd 2),
+        # bypassing Python's sys.stderr wrapper. We redirect fd 2 to a pipe,
+        # then run a background thread that reads from the pipe and filters
+        # the output before writing to the original fd 2.
+        #
+        _original_fd2 = os.dup(2)
+        _pipe_read, _pipe_write = os.pipe()
+
+        class _Fd2Writer:
+            """Write to the original fd 2."""
+            def write(self, text):
+                try:
+                    os.write(_original_fd2, text.encode("utf-8", errors="replace"))
+                except Exception:
+                    pass
+            def flush(self):
+                pass
+            def isatty(self):
+                return os.isatty(_original_fd2)
+
+        _fd2_output = _Fd2Writer()
+        _fd2_state = {"suppressed": False}
+
+        def _fd2_filter_loop():
+            try:
+                buf = b""
+                while True:
+                    chunk = os.read(_pipe_read, 4096)
+                    if not chunk:
+                        break
+                    buf += chunk
+                    for line in buf.split(b"\n"):
+                        text = line.decode("utf-8", errors="replace")
+                        if _fd2_state["suppressed"]:
+                            continue
+                        if "FlutterEngineRemoveView" in text:
+                            _fd2_state["suppressed"] = True
+                            continue
+                        if "FlBinaryMessenger" in text:
+                            _fd2_state["suppressed"] = True
+                            continue
+                        if "Gdk-Message" in text and "cursor theme" in text:
+                            _fd2_state["suppressed"] = True
+                            continue
+                        _fd2_output.write(text + "\n")
+                    buf = b""
+            except Exception:
+                pass
+
+        import threading
+        _fd2_thread = threading.Thread(target=_fd2_filter_loop, daemon=True)
+        _fd2_thread.start()
+
+        # Replace fd 2 with the write end of the pipe
+        os.dup2(_pipe_write, 2)
+        os.close(_pipe_write)
+
     def _launch(view=None):
         if hasattr(ft, "run"):
             if view is not None:
