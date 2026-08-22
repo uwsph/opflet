@@ -725,6 +725,9 @@ if __name__ == "__main__":
                         if "Gdk-Message" in text and "cursor theme" in text:
                             _fd2_state["suppressed"] = True
                             continue
+                        if "Gtk-Message" in text and "Failed to load module" in text:
+                            _fd2_state["suppressed"] = True
+                            continue
                         _fd2_output.write(text + "\n")
                     buf = b""
             except Exception:
